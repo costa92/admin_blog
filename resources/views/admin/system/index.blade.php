@@ -1,0 +1,9 @@
+@extends('admin.layouts.app')
+@section('sidebar')
+@show
+@section('content-header')
+    <h1>系统设置
+        <small>详情</small>
+    </h1>
+    @include('admin.crumbs.breadcrumb')
+@endsection
