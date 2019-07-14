@@ -58,13 +58,12 @@ abstract class BaseEloquent implements BaseInterface
      */
     public function get($where = [])
     {
-        $model = $this->model;
-
+        $query = $this->query();
         if ( $where ) {
-            $model->where($where);
+            $query = $query->where($where);
         }
 
-        return $model->get();
+        return $query->get();
     }
 
     /**
@@ -73,7 +72,7 @@ abstract class BaseEloquent implements BaseInterface
      */
     public function all()
     {
-        return $this->model->all();
+        return $this->query()->all();
     }
 
     /**
@@ -82,12 +81,12 @@ abstract class BaseEloquent implements BaseInterface
      */
     public function count($where = [] , $field = '*')
     {
-        $model = $this->model;
+        $query = $this->query();
         if ( $where ) {
-            $model->where($where);
+            $query = $query->where($where);
         }
 
-        return $model->count($field);
+        return $query->count($field);
     }
 
     /**
@@ -96,9 +95,22 @@ abstract class BaseEloquent implements BaseInterface
      */
     public function find($id)
     {
-        return $this->model->find($id);
+        return $this->query()->find($id);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function first($where = [])
+    {
+        $query = $this->query();
+        if ( $where ) {
+            $query = $query->where($where);
+        }
+
+        return $query->first();
+    }
 
     /**
      * @return Model
@@ -108,21 +120,23 @@ abstract class BaseEloquent implements BaseInterface
         return $this->model;
     }
 
+
     /**
      * @param int $pageNum
      */
     public function paginate($where = [] , $pageNum = 20)
     {
-        $model = $this->model;
+        $query = $this->query();
         if ( $where ) {
-            $model->where($where);
+            $query = $query->where($where);
         }
 
-        return $model->paginate($pageNum);
+        return $query->paginate($pageNum);
     }
 
 
     /**
+     * 获取表的字段
      * @return mixed
      */
     public function getFillable()
@@ -137,15 +151,16 @@ abstract class BaseEloquent implements BaseInterface
      * 保存数据
      * @param $data
      */
-    public function create($data)
+    public function create(array $data)
     {
         $data = $this->fillData($data);
-        $model = $this->model->fill($data);
-        $result = $model->save();
+        $query = $this->query()->fill($data);
+        $result = $query->save();
         if ( $result == false ) {
             throw new \Exception('添加数据失败');
         }
-        return $model;
+
+        return $query;
     }
 
     /**
@@ -164,19 +179,18 @@ abstract class BaseEloquent implements BaseInterface
     }
 
     /**
-     *
+     * 获取model的默认值
      * @param $data
      * @return mixed
      */
-    protected function fillData($data)
+    protected function fillData(array $data)
     {
-        $fillable = $this->getFillable();
+        $fillable = $this->getFillable(); // 获取字段
         foreach ( $fillable as $field ) {
             if ( !isset($data[ $field ]) ) {
                 $data[ $field ] = $this->model->getAttribute($field);
             }
         }
-
         return $data;
     }
 }

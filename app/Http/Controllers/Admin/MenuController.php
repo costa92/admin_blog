@@ -63,7 +63,7 @@ class MenuController extends BaseController
      */
     public function store(MenuCreateRequest $request)
     {
-        $result = $this->menuService->store($request);
+        $this->menuService->store($request);
 
         return redirectPath('menu');
     }
@@ -87,7 +87,7 @@ class MenuController extends BaseController
      */
     public function update(MenuEditRequest $request , $id)
     {
-        $result = $this->menuService->update($id , $request);
+        $this->menuService->update($id , $request);
 
         return redirectPath('menu');
     }
@@ -97,6 +97,6 @@ class MenuController extends BaseController
      */
     public function destroy($id)
     {
-       return $this->menuService->destroy($id);
+        return $this->menuService->destroy($id);
     }
 }

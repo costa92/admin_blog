@@ -24,6 +24,9 @@ class MenuEloquent extends BaseEloquent implements MenuInterface
         parent::__construct();
     }
 
+    /**
+     * @return mixed|string
+     */
     public function model()
     {
         return Menus::class;
@@ -41,7 +44,7 @@ class MenuEloquent extends BaseEloquent implements MenuInterface
             if ( $model && $model instanceof Menus ) {
                 $result = $this->update($model , $data);
             } else {
-                $result = $this->create($model);
+                $result = $this->create($data);
             }
 
             return $result;
@@ -53,7 +56,7 @@ class MenuEloquent extends BaseEloquent implements MenuInterface
                     'line' => $e->getLine() ,
                 ]
             );
-            throw new \Exception('保存数据失败！');
+            throw new \Exception('保存菜单数据失败！');
         }
     }
 }

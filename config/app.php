@@ -174,9 +174,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\RepositoriesServiceProvider::class,
         \Yangyifan\Upload\UploadServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+
+        App\Providers\RepositoriesServiceProvider::class,  // 加载数据层
     ],
 
     /*

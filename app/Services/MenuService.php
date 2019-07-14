@@ -15,13 +15,12 @@ namespace App\Services;
 use App\Http\Requests\MenuCreateRequest;
 use App\Models\Menus;
 use App\Repositories\Contracts\MenuInterface;
-use App\Repositories\Eloquents\MenuEloquent;
-use App\Traits\FormatData;
 
 class MenuService extends BaseService
 {
-
-    use FormatData;
+    /**
+     * @var MenuInterface
+     */
     private $menu;
 
     public function __construct(MenuInterface $menu)
@@ -35,7 +34,6 @@ class MenuService extends BaseService
      */
     public function queryList($params)
     {
-
         $where = [];
         if ( !empty($params['parent_id']) ) {
             $where['parent_id'] = $params['parent_id'];
@@ -75,12 +73,11 @@ class MenuService extends BaseService
     }
 
     /**
-     * @param array $params
      * @return mixed
      */
-    public function getListParent(array $params = [])
+    public function getListParent()
     {
-        return Menus::where('parent_id' , 0)->get();
+        return $this->menu->get( [ 'parent_id' => 0]);
     }
 
     /**
@@ -89,18 +86,9 @@ class MenuService extends BaseService
      */
     public function store(MenuCreateRequest $request)
     {
-        $menu = new Menus();
-        $menu->name = $request->name;
-        $menu->link = $request->link;
-        $menu->sort = $request->sort;
-        $menu->is_external_link = $request->isExternalLink;
-        $menu->parent_id = $request->parentId;
+        $data = $this->manyCamelize($request);
 
-        if ( $menu->save() == false ) {
-            Log::error("add blog menu info is fail");
-        }
-
-        return $menu;
+        return $this->menu->save($data);
     }
 
     /**
@@ -108,9 +96,7 @@ class MenuService extends BaseService
      */
     public function findFirstById($id)
     {
-        $menu = Menus::where('id' , $id)->first();
-
-        return $menu;
+        return $this->menu->find($id);
     }
 
     /**
@@ -123,7 +109,7 @@ class MenuService extends BaseService
         $menu = $this->findFirstById($id);
         if ( $menu ) {
             $data = $this->manyCamelize($request);
-            $menu = $this->menu->save($data,$menu);
+            $menu = $this->menu->save($data , $menu);
         }
 
         return $menu;

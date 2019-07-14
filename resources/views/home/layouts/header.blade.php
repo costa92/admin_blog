@@ -21,7 +21,7 @@
 <header id="header">
     <div class="navbox">
         <h2 id="mnavh"><span class="navicon"></span></h2>
-        <div class="logo"><a href="/">秋洪Blog</a></div>
+        <div class="logo"><a href="/">秋洪’Blog</a></div>
         <nav>
             <ul id="starlist">
                 @include('home.layouts.menu')

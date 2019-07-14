@@ -30,7 +30,6 @@ class AppServiceProvider extends ServiceProvider
                         }
                     }
                 }
-
                 // Insert bindings into query
                 $query = str_replace(array('%', '?'), array('%%', '%s'), $sql->sql);
 
@@ -54,9 +53,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(
-            \App\Repositories\Contracts\MenuInterface::class,
-            \App\Repositories\Eloquents\MenuEloquent::class
-        );
+
+        if ($this->app->environment() !== 'production') {
+            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+        }
     }
 }

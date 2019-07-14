@@ -12,8 +12,13 @@
 namespace App\Services;
 
 
+use App\Traits\FormatData;
+
 class BaseService
 {
+
+    use FormatData;
+
     public function __construct()
     {
     }

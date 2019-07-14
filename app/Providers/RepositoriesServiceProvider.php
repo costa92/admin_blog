@@ -20,7 +20,18 @@ class RepositoriesServiceProvider extends ServiceProvider
      *
      * @var bool
      */
-    protected $defer = true;
+    protected $defer = false;
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+
+    }
+
     /**
      * Register any application services.
      *
@@ -28,8 +39,15 @@ class RepositoriesServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind(
+            // 菜单
+            \App\Repositories\Contracts\MenuInterface::class,
+            \App\Repositories\Eloquents\MenuEloquent::class
 
+
+        );
     }
+
     /**
      * Get the services provided by the provider.
      *

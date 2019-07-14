@@ -42,6 +42,7 @@ trait FormatData
         return strtolower(preg_replace('/([a-z])([A-Z])/' , "$1" . $separator . "$2" , $camelCaps));
     }
 
+
     /**
      * 多维数据转驼峰命名转下划线命名
      * @param $data
